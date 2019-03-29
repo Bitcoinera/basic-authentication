@@ -83,7 +83,8 @@ app.post('/submit', (req, res) => {
 })
 
 app.get('/logout', (req, res) => {
-    res.render('login');
+    req.logout();
+    res.redirect('/');
 })
 
 app.listen(3000, () => {
