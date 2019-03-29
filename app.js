@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
+const passport = require('passport');
 
 const userControl = require('./controllers/user');
 const authControl = require('./controllers/auth');
@@ -12,6 +13,10 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./config/passport')(passport);
 
 app.get('/', (req, res) => {
     res.render('home');
