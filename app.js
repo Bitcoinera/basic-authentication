@@ -31,11 +31,16 @@ app.post('/login', (req, res) => {
         username: req.body.username,
         password: req.body.password
     }
-    if (authControl.authUser(user)) {
-        passport.authenticate('local')(req, res, () => {
-            res.redirect('secrets');
-        })
-    }
+
+    req.login( user, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            passport.authenticate('local')(req, res, () => {
+                res.redirect('secrets');
+            })
+        }
+    })
 })
 
 app.get('/register', (req, res) => {

@@ -4,12 +4,12 @@ var User = require('../models/userModel');
 module.exports = function(passport) {
 // passport session setup. serialize the user for the session
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user.password);
 });
 
 // used to deserialize the user
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
+passport.deserializeUser(function(user, done) {
+    User.findOne(user.username, function(err, user) {
         done(err, user);
     });
 });
