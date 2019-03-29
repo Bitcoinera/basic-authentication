@@ -1,0 +1,65 @@
+//jshint esversion:6
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const ejs = require('ejs');
+
+const userControl = require('./controllers/user');
+const authControl = require('./controllers/auth');
+const secretControl = require('./controllers/secret');
+
+app.set('view engine', 'ejs');
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+    res.render('home');
+})
+
+app.get('/login', (req, res) => {
+    res.render('login');
+})
+
+app.post('/login', (req, res) => {
+    let user = {
+        username: req.body.username,
+        password: req.body.password
+    }
+    if (authControl.authUser(user)) {
+        res.redirect('secrets');
+    }
+})
+
+app.get('/register', (req, res) => {
+    res.render('register');
+})
+
+app.post('/register', (req, res) => {
+    let user = {
+        username: req.body.username,
+        password: req.body.password
+    }
+    userControl.saveUser(user);
+    console.log('redirecting to login');
+    res.redirect('login');
+})
+
+app.get('/secrets', (req, res) => {
+    res.render('secrets');
+})
+
+app.get('/submit', (req, res) => {
+    res.render('submit');
+})
+
+app.post('/submit', (req, res) => {
+    let secret = {
+        secret: req.body.secret
+    }
+    secretControl.saveSecret(secret);
+})
+
+app.listen(3000, () => {
+    console.log('Server is listening on port 3000');
+})
