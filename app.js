@@ -32,7 +32,9 @@ app.post('/login', (req, res) => {
         password: req.body.password
     }
     if (authControl.authUser(user)) {
-        res.redirect('secrets');
+        passport.authenticate('local')(req, res, () => {
+            res.redirect('secrets');
+        })
     }
 })
 
@@ -63,6 +65,10 @@ app.post('/submit', (req, res) => {
         secret: req.body.secret
     }
     secretControl.saveSecret(secret);
+})
+
+app.get('/logout', (req, res) => {
+    res.render('login');
 })
 
 app.listen(3000, () => {
