@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const ejs = require('ejs');
+const session = require('express-session');
 const passport = require('passport');
 
 const userControl = require('./controllers/user');
@@ -13,6 +13,12 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
+
+app.use(session({
+    secret: "Our little secret.",
+    resave: false,
+    saveUninitialized: false
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -58,7 +64,11 @@ app.post('/register', (req, res) => {
 })
 
 app.get('/secrets', (req, res) => {
-    res.render('secrets');
+    if (req.isAuthenticated()) {
+        res.render('secrets');
+    } else {
+        res.redirect('login');
+    }
 })
 
 app.get('/submit', (req, res) => {
