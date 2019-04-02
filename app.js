@@ -84,6 +84,16 @@ app.get("/auth/google/secrets",
     res.redirect("/secrets");
 });
 
+app.get('/auth/facebook',
+  passport.authenticate('facebook'));
+
+app.get('/auth/facebook/secrets',
+    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    function(req, res) {
+    // Successful authentication, redirect home.
+        res.redirect('/');
+});
+
 app.get('/submit', (req, res) => {
     res.render('submit');
 })

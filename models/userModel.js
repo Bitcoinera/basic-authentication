@@ -5,7 +5,8 @@ mongoose.connect('mongodb://localhost:27017/authentication-course', {useNewUrlPa
 const UserSchema = new mongoose.Schema({
     username: String,
     password: String,
-    googleId: String
+    googleId: String,
+    facebookId: String
 })
 
 UserSchema.plugin(findOrCreate)

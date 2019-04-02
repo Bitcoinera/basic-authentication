@@ -1,5 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 var User = require('../models/userModel');
 
 module.exports = function(passport){
@@ -35,6 +36,21 @@ module.exports = function(passport){
             return done(err, user);
             });
         }
+    ));
+
+    // facebook strategy
+
+    passport.use(new FacebookStrategy({
+        clientID: process.env.FACEBOOK_APP_ID,
+        clientSecret: process.env.FACEBOOK_APP_SECRET,
+        callbackURL: "http://localhost:3000/auth/facebook/secrets" 
+      },
+      function(accessToken, refreshToken, profile, done) {
+        console.log('PROFILE IS', profile);
+        User.findOrCreate({ username: profile.displayName, facebookId: profile.id }, function (err, user) {
+            return done(err, user);
+        });
+      }
     ));
 
     // local strategy
