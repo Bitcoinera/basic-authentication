@@ -3,10 +3,22 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/authentication-course', {useNewUrlParser: true});
 
 const UserSchema = new mongoose.Schema({
-    username: String,
-    password: String,
+    username: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
     googleId: String,
-    facebookId: String
+    facebookId: String,
+    secrets: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Secret',
+          }]
+    }
 })
 
 UserSchema.plugin(findOrCreate)
