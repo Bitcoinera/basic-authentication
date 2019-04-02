@@ -65,9 +65,10 @@ app.post('/register', (req, res) => {
     res.redirect('login');
 })
 
-app.get('/secrets', (req, res) => {
+app.get('/secrets', async (req, res) => {
     if (req.isAuthenticated()) {
-        res.render('secrets');
+        let secretsFound = await secretControl.getSecrets();
+        res.render('secrets', {secrets: secretsFound});
     } else {
         res.redirect('login');
     }
@@ -98,11 +99,16 @@ app.get('/submit', (req, res) => {
     res.render('submit');
 })
 
-app.post('/submit', (req, res) => {
+app.post('/submit', async (req, res) => {
+    //Once the user is authenticated and their session gets saved, their user details are saved to req.user.
+    console.log('User is in post submit', req.user);
+
     let secret = {
-        secret: req.body.secret
+        secret: req.body.secret,
+        user: req.user._id
     }
     secretControl.saveSecret(secret);
+    res.redirect('secrets');
 })
 
 app.get('/logout', (req, res) => {

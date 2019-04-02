@@ -15,5 +15,15 @@ module.exports = {
                 console.log('Secret already exists');
             }
         })
+    },
+
+    async getSecrets() {
+        var secrets;
+        await Secret.find({}, (err, secretsFound) => {
+            if (!err) {
+                secrets = secretsFound;
+            }
+        });
+        return secrets;
     }
 }
