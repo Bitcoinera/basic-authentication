@@ -14,3 +14,8 @@ body {
   color: #fff;
   background-color: #000;
 }
+
+input[type=checkbox] {
+  margin-right: 20px;
+  vertical-align: middle;
+}

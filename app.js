@@ -74,6 +74,13 @@ app.get('/secrets', async (req, res) => {
     }
 })
 
+app.post('/delete', (req, res) => {
+    console.log('req.secret in DELETE', req.body.secret);
+    let secretToDelete = req.body.secret;
+    secretControl.deleteSecret(secretToDelete);
+    res.redirect('secrets');
+})
+
 app.get("/auth/google",
   passport.authenticate('google', { scope: ["profile"] })
 );

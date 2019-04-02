@@ -25,5 +25,11 @@ module.exports = {
             }
         });
         return secrets;
+    },
+
+    async deleteSecret(secret) {
+        await Secret.deleteOne({secret: secret}, (err) => {
+            if (err) { console.error(err) };
+        })
     }
 }
